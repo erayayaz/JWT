@@ -41,7 +41,7 @@ public class TokenGenerator {
         try {
             return verifier.verify(token);
         } catch (Exception e){
-            throw new GenericException(HttpStatus.BAD_REQUEST, null, e.getMessage());
+            throw new GenericException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 

@@ -5,7 +5,6 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 
 data class UserDto(
-    val id: Int?,
     val username: String,
     val password: String,
     val email: String,
