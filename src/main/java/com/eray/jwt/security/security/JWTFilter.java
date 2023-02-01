@@ -30,7 +30,6 @@ public class JWTFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
@@ -51,6 +50,7 @@ public class JWTFilter extends OncePerRequestFilter {
             Map<String, String> errors = new HashMap<>();
             errors.put("error", e.getMessage());
             ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println(e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(objectMapper.writeValueAsString(errors));
         }

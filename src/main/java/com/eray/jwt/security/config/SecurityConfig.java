@@ -1,5 +1,6 @@
 package com.eray.jwt.security.config;
 
+import com.eray.jwt.security.model.Role;
 import com.eray.jwt.security.security.JWTFilter;
 import com.eray.jwt.security.security.JwtAccessDeniedHandler;
 import com.eray.jwt.security.security.JwtAuthenticationEntryPoint;
@@ -37,13 +38,14 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests((auth) -> {
-                    auth.requestMatchers("/api/admin").hasAuthority("ADMIN");
-                    auth.requestMatchers("/api/user").hasAnyAuthority("ADMIN", "USER");
+                    auth.requestMatchers("/api/admin").hasAuthority(Role.ADMIN.toString());
+                    auth.requestMatchers("/api/user").hasAnyAuthority(Role.ADMIN.toString(), Role.USER.toString());
                     auth.anyRequest().authenticated();
                 })
                 .formLogin().disable()
@@ -58,7 +60,7 @@ public class SecurityConfig {
     // With this method we can remove our security issues and role request on the page
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web -> web.ignoring().requestMatchers("/api/images/**", "/api/auth/login"));
+        return (web -> web.ignoring().requestMatchers("/api/images/**", "/api/auth/login", "/api/public"));
     }
 
     // Because of the cors policy. This method will prevent it.
